@@ -3,10 +3,16 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
+    "dev": "next dev --turbopack",
+    "dev-https": "next dev --experimental-https",
+  "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "biome lint --write",
+    "format": "biome format --write",
+    "check": "biome check",
+    "type-check": "tsc --noEmit",
+    "all:check": "run-s type-check check",
+    "all:fix": "biome check --write"
   },
   "dependencies": {
     "react": "^19.0.0",
@@ -20,5 +26,18 @@
     "@types/react-dom": "^19",
     "@tailwindcss/postcss": "^4",
     "tailwindcss": "^4"
+  },
+  "engines": {
+    "node": "^20.17.0",
+    "npm": "use pnpm",
+    "yarn": "use pnpm",
+    "pnpm": ">=9.8.0"
+  },
+  "packageManager": "pnpm@9.12.3",
+  "pnpm": {
+    "overrides": {
+      "@types/react": "npm:types-react@19.0.0-rc.1",
+      "@types/react-dom": "npm:types-react-dom@19.0.0"
+    }
   }
 }
