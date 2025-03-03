@@ -1,9 +1,9 @@
 import React from 'react'
 
 type Props = {
-  params: {
+  params: Promise<{
     id: string
-  }
+  }>
 }
 
 export default async function BlogPage({ params }: Props) {
