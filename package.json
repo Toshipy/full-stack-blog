@@ -15,7 +15,9 @@
     "all:fix": "biome check --write"
   },
   "dependencies": {
+    "@prisma/client": "^6.4.1",
     "next": "15.2.0",
+    "prisma": "^6.4.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "tailwindcss-animate": "^1.0.7",

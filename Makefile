@@ -13,3 +13,10 @@ check:
 
 format:
 	make biome-write
+
+migrate:
+	npx prisma migrate dev --name init
+
+studio:
+	npx prisma studio
+

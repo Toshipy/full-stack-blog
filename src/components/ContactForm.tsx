@@ -13,7 +13,10 @@ export default function ContactForm() {
   })
   const [state, formAction] = useActionState(sendContactForm, {
     success: false,
-    error: {},
+    error: {
+      name: [],
+      email: []
+    },
     serverError: undefined
   })
 

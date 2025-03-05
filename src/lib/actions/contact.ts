@@ -2,6 +2,7 @@
 
 import { contactSchema } from '@/validations/contact'
 import { redirect } from 'next/navigation'
+import { prisma } from '@/lib/prisma'
 
 // ActionStateの型定義
 type State = {
@@ -16,8 +17,8 @@ export async function sendContactForm(
   _prevState: State,
   formData: FormData
 ): Promise<State> {
-  const name = formData.get('name')
-  const email = formData.get('email')
+  const name = formData.get('name') as string
+  const email = formData.get('email') as string
 
   const validationResult = contactSchema.safeParse({
     name,
@@ -35,6 +36,29 @@ export async function sendContactForm(
       }
     }
   }
+
+  const contact = await prisma.contact.findUnique({
+    where: {
+      email: email as string
+    }
+  })
+
+  if (contact) {
+    return {
+      success: false,
+      error: {
+        name: [],
+        email: ['このメールアドレスは既に登録されています']
+      }
+    }
+  }
+
+  await prisma.contact.create({
+    data: {
+      name: name,
+      email: email
+    }
+  })
 
   // 成功状態を返してからリダイレクト
   const result = {
