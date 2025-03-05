@@ -1,8 +1,8 @@
 'use server'
 
+import { prisma } from '@/lib/prisma'
 import { contactSchema } from '@/validations/contact'
 import { redirect } from 'next/navigation'
-import { prisma } from '@/lib/prisma'
 
 // ActionStateの型定義
 type State = {
