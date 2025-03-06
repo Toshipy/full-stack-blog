@@ -1,12 +1,8 @@
-import { NextRequest, NextResponse } from 'next/server'
+import NextAuth from 'next-auth'
+import { authConfig } from './auth.config'
 
-export function middleware(request: NextRequest) {
-  if (!request.nextUrl.pathname.includes('.')) {
-    console.log('middleware')
-  }
-  return NextResponse.next()
-}
+export default NextAuth(authConfig).auth
 
 export const config = {
-  matcher: ['/blog/:path*']
+  matcher: ['/((?!api|_next/static|_next/image|.*\\.png$).*)']
 }
