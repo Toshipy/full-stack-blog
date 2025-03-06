@@ -1,9 +1,15 @@
-import { getPosts } from '@/lib/post'
 import PostCard from '@/components/post/PostCard'
+import { getPosts, searchPosts } from '@/lib/post'
 import { Post } from '@/types/post'
 
-export default async function PostsPage() {
-  const posts = await getPosts()
+type Params = {
+  searchParams: Promise<{ keyword: string }>
+}
+
+export default async function PostsPage({ searchParams }: Params) {
+  const resolvedSearchParams = await searchParams
+  const query = resolvedSearchParams.keyword || ''
+  const posts = query ? await searchPosts(query) : await getPosts()
   return (
     <>
       <div className="container mx-auto px-4 py-8">

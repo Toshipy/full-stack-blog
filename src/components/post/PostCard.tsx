@@ -1,9 +1,9 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { PostCardProps } from '@/types/post'
-import Link from 'next/link'
 import { formatDistanceToNow } from 'date-fns'
 import { ja } from 'date-fns/locale'
 import Image from 'next/image'
+import Link from 'next/link'
 
 export default function PostCard({ post }: PostCardProps) {
   return (

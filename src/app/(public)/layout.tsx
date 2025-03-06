@@ -1,6 +1,6 @@
+import { PublicHeader } from '@/components/layouts/PublicHeader'
 import type { Metadata } from 'next'
 import { ReactNode } from 'react'
-import { PublicHeader } from '@/components/layouts/PublicHeader'
 
 export const metadata: Metadata = {
   title: 'Blog',
