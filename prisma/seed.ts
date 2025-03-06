@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client'
-import * as bcrypt from 'bcrypt'
+import * as bcrypt from 'bcryptjs'
 
 const prisma = new PrismaClient()
 
@@ -19,20 +19,20 @@ async function main() {
   // ユーザー作成
   const user = await prisma.user.create({
     data: {
-      name: 'test',
-      email: 'test@exmaple.com',
+      name: 'Arai',
+      email: 'arai@exmaple.com',
       password: hashedPassword,
       posts: {
         create: [
           {
-            title: 'test',
-            content: 'test',
+            title: '１番目の投稿',
+            content: 'これは最初のブログ投稿です',
             topImage: dummyImage[0],
             published: true
           },
           {
-            title: 'test2',
-            content: 'test2',
+            title: '２番目の投稿',
+            content: 'これは２番目のブログ投稿です',
             topImage: dummyImage[1],
             published: true
           }
