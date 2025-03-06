@@ -1,42 +1,34 @@
-'use client'
-
-import Link from 'next/link'
 import * as React from 'react'
 
+import { auth } from '@/auth'
 import {
   NavigationMenu,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList
 } from '@/components/ui/navigation-menu'
-import { SearchBox } from '../post/SearchBox'
-import { Button } from '../ui/button'
+import Link from 'next/link'
+import Setting from './Setting'
 
-export function PublicHeader() {
+export default async function PrivateHeader() {
+  const session = await auth()
+  if (!session?.user?.email) throw new Error('不正なリクエストです')
   return (
-    <div className="">
+    <div>
       <header className="border-b bg-indigo-700">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <NavigationMenu>
             <NavigationMenuList>
               <NavigationMenuItem>
-                <Link href="/" legacyBehavior passHref>
+                <Link href="/dashboard" legacyBehavior passHref>
                   <NavigationMenuLink className="text-2xl font-bold text-white">
-                    Blog
+                    管理ページ
                   </NavigationMenuLink>
                 </Link>
               </NavigationMenuItem>
             </NavigationMenuList>
           </NavigationMenu>
-          <div className="flex items-center gap-4">
-            <SearchBox />
-            <Button variant="outline" asChild>
-              <Link href="/login">ログイン</Link>
-            </Button>
-            <Button asChild>
-              <Link href="/signup">新規登録</Link>
-            </Button>
-          </div>
+          <Setting session={session} />
         </div>
       </header>
     </div>
