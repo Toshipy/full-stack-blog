@@ -1,5 +1,6 @@
 import * as React from 'react'
 
+import { auth } from '@/auth'
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -7,7 +8,6 @@ import {
   NavigationMenuList
 } from '@/components/ui/navigation-menu'
 import Link from 'next/link'
-import { auth } from '@/auth'
 import Setting from './Setting'
 
 export default async function PrivateHeader() {

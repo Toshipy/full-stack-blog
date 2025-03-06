@@ -7,7 +7,7 @@ import {
   NavigationMenu,
   NavigationMenuItem,
   NavigationMenuLink,
-  NavigationMenuList,
+  NavigationMenuList
 } from '@/components/ui/navigation-menu'
 import { SearchBox } from '../post/SearchBox'
 import { Button } from '../ui/button'

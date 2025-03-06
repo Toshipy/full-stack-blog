@@ -1,12 +1,12 @@
+import { signOut } from '@/auth'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
-import { signOut } from '@/auth'
-import { Button } from '../ui/button'
 import { Session } from 'next-auth'
+import { Button } from '../ui/button'
 
 export default function Settings({ session }: { session: Session }) {
   const handleLogout = async () => {
