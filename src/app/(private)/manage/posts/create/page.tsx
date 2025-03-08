@@ -4,10 +4,11 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { ChangeEvent, useState } from 'react'
-import ReactMarkdown from 'react-markdown'
 import TextareaAutosize from 'react-textarea-autosize'
-import rehypeHighlight from 'rehype-highlight'
+import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
+import rehypeRaw from 'rehype-raw'
+import rehypeHighlight from 'rehype-highlight'
 
 export default function CreatePostPage() {
   const [content, setContent] = useState('')
@@ -46,7 +47,7 @@ export default function CreatePostPage() {
             内容
           </Label>
           <TextareaAutosize
-            className="w-full border p-2"
+            className="w-full border p-2 font-mono text-sm"
             id="content"
             name="content"
             placeholder="内容を入力"
@@ -68,15 +69,16 @@ export default function CreatePostPage() {
           </Button>
         </div>
         {preview && (
-          <div className="border p-4 bg-gray-50 prose max-w-none">
-            <ReactMarkdown
-              remarkPlugins={[remarkGfm]}
-              rehypePlugins={[rehypeHighlight]}
-              skipHtml={false}
-              unwrapDisallowed={true}
-            >
-              {content}
-            </ReactMarkdown>
+          <div className="border p-4 bg-gray-50 rounded-md">
+            <div className="prose prose-slate max-w-none dark:prose-invert">
+              <ReactMarkdown
+                className="markdown"
+                remarkPlugins={[remarkGfm]}
+                rehypePlugins={[rehypeRaw, rehypeHighlight]}
+              >
+                {content}
+              </ReactMarkdown>
+            </div>
           </div>
         )}
         <Button className="cursor-pointer" type="submit">
