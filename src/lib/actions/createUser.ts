@@ -2,7 +2,7 @@
 
 import { signIn } from '@/auth'
 import { prisma } from '@/lib/prisma'
-import { registerSchema } from '@/validations/contact'
+import { registerSchema } from '@/validations/user'
 import * as bcrypt from 'bcryptjs'
 import { redirect } from 'next/navigation'
 import { ZodError } from 'zod'
