@@ -3,17 +3,21 @@
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { ChangeEvent, useState } from 'react'
-import TextareaAutosize from 'react-textarea-autosize'
+import { createPost } from '@/lib/actions/createPost'
+import { ChangeEvent, useActionState, useState } from 'react'
 import ReactMarkdown from 'react-markdown'
-import remarkGfm from 'remark-gfm'
-import rehypeRaw from 'rehype-raw'
+import TextareaAutosize from 'react-textarea-autosize'
 import rehypeHighlight from 'rehype-highlight'
+import remarkGfm from 'remark-gfm'
 
 export default function CreatePostPage() {
   const [content, setContent] = useState('')
   const [contentLength, setContentLength] = useState(0)
   const [preview, setPreview] = useState(false)
+  const [state, formAction] = useActionState(createPost, {
+    success: false,
+    errors: {}
+  })
 
   const handleContentChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     const content = e.target.value
@@ -24,7 +28,7 @@ export default function CreatePostPage() {
   return (
     <div className="container mx-auto px-4 py-6">
       <h1 className="text-2xl font-bold mb-4">記事を作成</h1>
-      <form className="space-y-4">
+      <form action={formAction} className="space-y-4">
         <div className="space-y-2">
           <Label
             htmlFor="title"
@@ -32,13 +36,32 @@ export default function CreatePostPage() {
           >
             タイトル
           </Label>
+          <Input
+            type="text"
+            id="title"
+            name="title"
+            placeholder="タイトルを入力"
+          />
+          {state.errors.title && (
+            <p className="text-red-500 text-sm">
+              {state.errors.title.join(', ')}
+            </p>
+          )}
         </div>
-        <Input
-          type="text"
-          id="title"
-          name="title"
-          placeholder="タイトルを入力"
-        />
+        <div className="space-y-2">
+          <Label
+            htmlFor="image"
+            className="block text-sm font-medium text-gray-700"
+          >
+            画像
+          </Label>
+          <Input type="file" id="topImage" accept="image/*" name="topImage" />
+          {state.errors.topImage && (
+            <p className="text-red-500 text-sm">
+              {state.errors.topImage.join(', ')}
+            </p>
+          )}
+        </div>
         <div className="space-y-2">
           <Label
             htmlFor="content"
@@ -55,6 +78,11 @@ export default function CreatePostPage() {
             value={content}
             onChange={handleContentChange}
           />
+          {state.errors.content && (
+            <p className="text-red-500 text-sm">
+              {state.errors.content.join(', ')}
+            </p>
+          )}
         </div>
         <div className="text-right text-sm text-gray-500 mt-1">
           文字数: {contentLength}
@@ -74,7 +102,7 @@ export default function CreatePostPage() {
               <ReactMarkdown
                 className="markdown"
                 remarkPlugins={[remarkGfm]}
-                rehypePlugins={[rehypeRaw, rehypeHighlight]}
+                rehypePlugins={[rehypeHighlight]}
               >
                 {content}
               </ReactMarkdown>

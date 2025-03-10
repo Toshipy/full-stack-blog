@@ -8,6 +8,11 @@ const nextConfig: NextConfig = {
         protocol: 'https'
       }
     ]
+  },
+  experimental: {
+    serverActions: {
+      bodySizeLimit: '5mb'
+    }
   }
 }
 
