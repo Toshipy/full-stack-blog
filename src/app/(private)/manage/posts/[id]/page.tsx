@@ -1,4 +1,6 @@
+import { auth } from '@/auth'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { getPost } from '@/lib/ownPost'
 import { getPostById } from '@/lib/post'
 import { format } from 'date-fns'
 import Image from 'next/image'
@@ -11,9 +13,14 @@ type Params = {
   params: Promise<{ id: string }>
 }
 
-export default async function PostPage({ params }: Params) {
+export default async function ShowPage({ params }: Params) {
   const { id } = await params
-  const post = await getPostById(id)
+  const session = await auth()
+  const userId = session?.user?.id
+  if (!userId || !session?.user?.id) {
+    throw new Error('ユーザーが見つかりません')
+  }
+  const post = await getPost(userId, id)
   if (!post) {
     return notFound()
   }
@@ -43,7 +50,7 @@ export default async function PostPage({ params }: Params) {
         </CardHeader>
         <CardContent className="mb-4">
           <div className="border p-4 bg-gray-50 rounded-md">
-            <div className="prose prose-slate max-w-none dark:prose-invert">
+            <div className="prose max-w-none">
               <ReactMarkdown
                 className="markdown"
                 remarkPlugins={[remarkGfm]}
