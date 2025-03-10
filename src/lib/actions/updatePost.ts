@@ -1,6 +1,5 @@
 'use server'
 
-import { auth } from '@/auth'
 import { saveImage } from '@/utils/image'
 import { postSchema } from '@/validations/post'
 import { redirect } from 'next/navigation'
@@ -11,7 +10,7 @@ type ActionState = {
   errors: Record<string, string[]>
 }
 
-export async function createPost(
+export async function updatePost(
   _prevState: ActionState,
   formData: FormData
 ): Promise<ActionState> {
@@ -20,6 +19,9 @@ export async function createPost(
   const content = formData.get('content') as string
   const topImageInput = formData.get('topImage')
   const topImage = topImageInput ? (topImageInput as File) : null
+  const postId = formData.get('postId') as string
+  const published = formData.get('published') === 'true'
+  const oldImageUrl = formData.get('oldImageUrl') as string
 
   // Validation
   const validationResult = postSchema.safeParse({
@@ -35,27 +37,33 @@ export async function createPost(
   }
 
   // 画像保存
-  const imageUrl = topImage ? await saveImage(topImage) : null
-  if (topImage && !imageUrl) {
-    return {
-      success: false,
-      errors: {
-        image: ['画像の保存に失敗しました']
+  let imageUrl = oldImageUrl
+  if (
+    topImage instanceof File &&
+    topImage.size > 0 &&
+    topImage.name !== undefined
+  ) {
+    const newImageUrl = await saveImage(topImage)
+    if (!newImageUrl) {
+      return {
+        success: false,
+        errors: {
+          image: ['画像の保存に失敗しました']
+        }
       }
     }
+    imageUrl = newImageUrl
   }
   // データベースに保存
-  const session = await auth()
-  const userId = session?.user?.id
-  if (!userId || !session?.user?.id) {
-    throw new Error('ユーザーが見つかりません')
-  }
-  await prisma.post.create({
+  await prisma.post.update({
+    where: {
+      id: postId
+    },
     data: {
       title,
       content,
       topImage: imageUrl,
-      authorId: userId
+      published
     }
   })
   redirect('/dashboard')
