@@ -31,7 +31,7 @@ export default function PostDropdownMenu({ postId }: PostDropdownMenuProps) {
               編集
             </Link>
           </DropdownMenuItem>
-          <DropdownMenuItem asChild className="text-red-600 cursor-pointer">
+          <DropdownMenuItem className="text-red-600 cursor-pointer">
             削除
           </DropdownMenuItem>
         </DropdownMenuContent>
